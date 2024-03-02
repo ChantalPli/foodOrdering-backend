@@ -2,23 +2,25 @@
 
 import express from "express"
 import multer from "multer"
+import MyRestaurantController from "../controllers/MyRestaurantController"
 
 const router = express.Router()
 
 // multer middleware:
 const storage = multer.memoryStorage()
 const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 5 * 1024 * 1024, //5mb
-    }
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, //5mb
+  }
 })
 
 // /api/my/restaurant
 router.post(
-    "/",
-    upload.single("imageFile"),
-    MyRestaurantController.createMyRestaurant)
+  "/",
+  upload.single("imageFile"),
+  MyRestaurantController.createMyRestaurant
+)
 
 
-export default Router
+export default router

@@ -5,6 +5,7 @@ import "dotenv/config"
 import mongoose from "mongoose"
 import myUserRoute from "./routes/MyUserRoute"
 import { v2 as cloudinary } from "cloudinary"
+import myRestaurantRoute from "./routes/MyRestaurantRoute"
 
 //db connection
 mongoose
@@ -27,6 +28,7 @@ app.get("/health", async (req: Request, res: Response) => {
 })
 
 app.use("/api/my/user", myUserRoute)
+app.use("/api/my/restaurant", myRestaurantRoute)
 
 app.listen(7000, () => {
     console.log('listening on port 7000')
