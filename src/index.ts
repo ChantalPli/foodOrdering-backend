@@ -1,14 +1,21 @@
 //SERVER
-
 import express, { Request, Response } from "express"
 import cors from "cors"
 import "dotenv/config"
 import mongoose from "mongoose"
 import myUserRoute from "./routes/MyUserRoute"
+import { v2 as cloudinary } from "cloudinary"
 
+//db connection
 mongoose
     .connect(process.env.MONGO_DB_CONNECTION_STRING as string)
-    .then(() => console.log("connected to database!"))
+    .then(() => console.log("connected to database!"));
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 const app = express()
 app.use(express.json()) //middleware
