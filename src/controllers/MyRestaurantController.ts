@@ -7,7 +7,7 @@ const createMyRestaurant = async (req: Request, res: Response) => {
   try {
     //to check if user has an existing restaurant in the db. 
     //user can only add one restaurant.
-    const existingRestaurant = await Restaurant.find({ user: req.userId })
+    const existingRestaurant = await Restaurant.findOne({ user: req.userId })
 
     //if user already has a restaurant
     if (existingRestaurant) {
@@ -18,9 +18,10 @@ const createMyRestaurant = async (req: Request, res: Response) => {
 
     //to create data uri string that represents the image we got in the req//cloudinary
     const image = req.file as Express.Multer.File
+
     //we convert the img to a base 64 string and we pass it to a datauri string:
     const base64Image = Buffer.from(image.buffer).toString("base64")
-    const dataURI = `data:${image.mimetype};base64,${base64Image}`
+    const dataURI = `data:${image.mimetype};base64,${base64Image}`;
 
     //we upload the img to cloudinary:
     const uploadResponse = await cloudinary.v2.uploader.upload(dataURI)//img url in the uploadResonse
