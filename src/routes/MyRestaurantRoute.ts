@@ -28,11 +28,21 @@ router.get(
 //POST /api/my/restaurant
 router.post(
   "/",
-  upload.single("imageFile"),
+  upload.single("imageFile"), //habdling image upload
   validateMyRestaurantRequest,
   jwtCheck, //to ensure we get a valid token in the request
   jwtParse, // it pulls the current logged in user info out of the token and passes it on to the request
   MyRestaurantController.createMyRestaurant
+)
+
+//PUT
+router.put(
+  "/",
+  upload.single("imageFile"),
+  validateMyRestaurantRequest,
+  jwtCheck,
+  jwtParse,
+  MyRestaurantController.updateMyRestaurant
 )
 
 
