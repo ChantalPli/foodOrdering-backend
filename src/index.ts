@@ -21,8 +21,12 @@ cloudinary.config({
 })
 
 const app = express()
-app.use(express.json()) //middleware
+
 app.use(cors())
+
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }))
+
+app.use(express.json())
 
 //RENDER - to check if the server has successfully started
 app.get("/health", async (req: Request, res: Response) => {
