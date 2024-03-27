@@ -2,7 +2,7 @@ import mongoose, { InferSchemaType } from "mongoose"
 
 
 const menuItemSchema = new mongoose.Schema({
-    _id: { type: mongoose.Schema.Types.ObjectId, required: true, default: () => new mongoose.Types.ObjectId() },
+    _id: { type: mongoose.Schema.Types.ObjectId, required: true, default: () => new mongoose.Types.ObjectId() }, //=> "default" keeps default mongoose behaviour to add an objectId whenever a menuItem is created
     name: { type: String, required: true },
     price: { type: Number, required: true }
 })

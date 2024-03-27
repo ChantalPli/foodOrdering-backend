@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import Restaurant from "../models/restaurant"
 import cloudinary from "cloudinary"
 import mongoose from "mongoose"
+import Order from "../models/order"
 
 
 //HANDLERS
@@ -93,6 +94,54 @@ const updateMyRestaurant = async (req: Request, res: Response) => {
   }
 }
 
+const getMyRestaurantOrders = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId })
+
+    if (!restaurant) {
+      return res.status(404).json({ message: "restaurant not found" })
+    }
+
+    const orders = await Order.find({ restaurant: restaurant._id })
+      .populate("restaurant")
+      .populate("user")
+
+    res.json(orders)
+
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "something went wrong" })
+  }
+}
+
+const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params
+    const { status } = req.body
+
+    const order = await Order.findById(orderId)
+    if (!order) {
+      return res.status(404).json({ message: "order not found" })
+    }
+
+    const restaurant = await Restaurant.findById(order.restaurant)
+
+    //if user doesn't own the restaurant:
+    //to check if the user who created the restaurant is different from the user who sent the request 
+    if (restaurant?.user?._id.toString() !== req.userId) {
+      return res.status(401).send()
+    }
+    //to update the status
+    order.status = status
+    await order.save()
+
+    res.status(200).json(order)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "unable to update order status" })
+  }
+}
+
 
 //logic to take an image uploaded and return the url 
 const uploadImage = async (file: Express.Multer.File) => {
@@ -105,6 +154,8 @@ const uploadImage = async (file: Express.Multer.File) => {
 }
 
 export default {
+  updateOrderStatus,
+  getMyRestaurantOrders,
   getMyRestaurant,
   createMyRestaurant,
   updateMyRestaurant

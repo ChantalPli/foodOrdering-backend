@@ -31,7 +31,7 @@ const searchRestaurant = async (req: Request, res: Response) => {
     let query: any = {}
 
     query["city"] = new RegExp(city, "i") //ignore case
-    const cityCheck = await Restaurant.countDocuments(query)
+    const cityCheck = await Restaurant.countDocuments(query) // countDocuments: mongoose method
     if (cityCheck === 0) {
       return res.status(404).json({
         data: [],
@@ -44,10 +44,9 @@ const searchRestaurant = async (req: Request, res: Response) => {
     }
 
     //if there are matching restaurants: 
-
     if (selectedCuisines) {
       const cuisinesArray = selectedCuisines.split(",").map((cuisine) => new RegExp(cuisine, "i"))
-      query["cuisines"] = { $all: cuisinesArray }
+      query["cuisines"] = { $all: cuisinesArray } //it searches for documents where the "cuisines" contains all elements of the "cuisinesArray" 
     }
 
     if (searchQuery) {

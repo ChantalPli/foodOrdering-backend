@@ -51,7 +51,7 @@ const stripeWebhookHandler = async (req: Request, res: Response) => {
   }
 
   if (event.type === "checkout.session.completed") {
-    const order = await Order.findById(event.data.object.metadata?.orderId);
+    const order = await Order.findById(event.data.object.metadata?.orderId);//id of checkout session completed 
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
@@ -76,7 +76,7 @@ const createCheckoutSession = async (req: Request, res: Response) => {
     if (!restaurant) {
       throw new Error("Restaurant not found")
     }
-
+    //model for the order:
     const newOrder = new Order({
       restaurant: restaurant,
       user: req.userId,
@@ -86,6 +86,7 @@ const createCheckoutSession = async (req: Request, res: Response) => {
       createdAt: new Date()
     })
 
+    // items we want to display on the checkout page
     const lineItems = createLineItems(checkoutSessionRequest, restaurant.menuItems)
 
     const session = await createSession(

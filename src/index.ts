@@ -24,7 +24,7 @@ const app = express()
 
 app.use(cors())
 
-app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }))
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }))// for stripe to have access to the raw data in the request
 
 app.use(express.json())
 

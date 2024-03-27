@@ -31,7 +31,7 @@ const createCurrentUser = async (req: Request, res: Response) => {
       return res.status(200).send()
     }
 
-    //2.if it doesn't create it 
+    //2.if it doesn't,we create it 
     const newUser = new User(req.body)
     await newUser.save()
 
